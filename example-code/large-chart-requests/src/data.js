@@ -1,14 +1,14 @@
-export const URL    = 'https://demo-d.tradovateapi.com/v1',
-             MD_URL = 'wss://md-d.tradovateapi.com/v1/websocket',
-             WS_URL = 'wss://demo-d.tradovateapi.com/v1/websocket'
+export const URL    = 'https://demo.tradovateapi.com/v1',
+             MD_URL = 'wss://md.tradovateapi.com/v1/websocket',
+             WS_URL = 'wss://demo.tradovateapi.com/v1/websocket'
       
 export const credentials = {
-    name:       "alennert02@gmail.com",
-    password:   "YumD00d24!",
+    name:       "your credentials here",
+    password:   "your credentials here",
     appId:      "Sample App",
     appVersion: "1.0",
-    cid:        8,
-    sec:        'f03741b6-f634-48d6-9308-c8fb871150c2'
+    cid:        0,
+    sec:        'your sec'
 }
 
 export const getChartBody = {
