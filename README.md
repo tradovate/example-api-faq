@@ -13,6 +13,6 @@ In an effort to aid in the learning process for new API developers, we’ve prep
 
 [How to Handle Data Size Limits](https://github.com/tradovate/example-api-faq/tree/main/docs/HowToHandleDataSizeLimits.md)
 
-[How to Handle Request Rate Limits](https://github.com/tradovate/example-api-faq/tree/main/docs/HowToHandleRequestRateLimits.md)
+[How to Handle Request Rate Limits](https://github.com/tradovate/example-api-faq/tree/main/docs/HowToHandleRequestLimits.md)
 
 [What is the Entity System and How Does it Work?](https://github.com/tradovate/example-api-faq/tree/main/docs/WhatIsTheEntitySystemAndHowDoesItWork.md)
