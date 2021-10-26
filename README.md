@@ -5,14 +5,14 @@ The Tradovate API has a very wide range of features - every bit of functionality
 
 In an effort to aid in the learning process for new API developers, we’ve prepared a list of articles that covers some of our most frequently asked questions.
 
-[How is the Tradovate API Partitioned?](https://github.com/tradovate/example-api-faq/docs/HowIsTheTradovateApiPartitioned.md) (or What is the Purpose of the Tradovate Subdomains?)
+[How is the Tradovate API Partitioned?](https://github.com/tradovate/example-api-faq/tree/main/docs/HowIsTheTradovateApiPartitioned.md) (or What is the Purpose of the Tradovate Subdomains?)
 
-[REST API vs WebSocket API](https://github.com/tradovate/example-api-faq/docs/RestApiVsWebSocketApi.md)
+[REST API vs WebSocket API](https://github.com/tradovate/example-api-faq/tree/main/docs/RestApiVsWebSocketApi.md)
 
-[How Does Tradovate Limit Requests and Data?](https://github.com/tradovate/example-api-faq/docs/HowDoesTradovateLimitRequestsAndData.md)
+[How Does Tradovate Limit Requests and Data?](https://github.com/tradovate/example-api-faq/tree/main/docs/HowDoesTradovateLimitRequestsAndData.md)
 
-[How to Handle Data Size Limits](https://github.com/tradovate/example-api-faq/docs/HowToHandleDataSizeLimits.md)
+[How to Handle Data Size Limits](https://github.com/tradovate/example-api-faq/tree/main/docs/HowToHandleDataSizeLimits.md)
 
-[How to Handle Request Rate Limits](https://github.com/tradovate/example-api-faq/docs/HowToHandleRequestRateLimits.md)
+[How to Handle Request Rate Limits](https://github.com/tradovate/example-api-faq/tree/main/docs/HowToHandleRequestRateLimits.md)
 
-[What is the Entity System and How Does it Work?](https://github.com/tradovate/example-api-faq/docs/WhatIsTheEntitySystemAndHowDoesItWork.md)
+[What is the Entity System and How Does it Work?](https://github.com/tradovate/example-api-faq/tree/main/docs/WhatIsTheEntitySystemAndHowDoesItWork.md)

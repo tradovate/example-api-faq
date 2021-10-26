@@ -29,3 +29,5 @@ In order to get more data than the maximum amount per request, we must make seve
 }
 ```
 * Wait for the next end-of-history object. If the oldest bar’s timestamp is equal to the target date, break out of the loop or resolve the chain of promises with the gathered data. Otherwise repeat the above steps until the oldest bar is your target date.
+
+Also see the [large-chart-request project](https://github.com/tradovate/example-api-faq/tree/main/example-code/large-chart-requests) for an example of how to request large data sets in JavaScript.

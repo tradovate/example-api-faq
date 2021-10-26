@@ -5,7 +5,7 @@ It’s likely that at some point, despite your best efforts, you’ll get a time
 
 * Instead of the typical response, you receive a response with the `p-ticket` and `p-time` fields. The server has determined that a threshold has been reached and issues the time penalty response. 
 
->Note: *If you receive an object with a `p-captcha` field, this means a third party application cannot complete the request and clients should be directed to try again in an hour.* 
+>**Note**: *If you receive an object with a `p-captcha` field, this means a third party application cannot complete the request and clients should be directed to try again in an hour.* 
 
 To handle the above scenario, we simply need to use the p-time field to determine the time in seconds before we can make a request again. When we retry the request we should include p-ticket as an additional field in the request body (including the original body fields). 
  
