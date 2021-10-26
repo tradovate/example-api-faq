@@ -10,7 +10,7 @@ There are at least two good reasons to stay flexible when it comes to our limita
 
 Also see:
 
-[How to Handle Request Limits](https://github.com/tradovate/example-api-faq/tree/main/tree/main/docs/HowToHandleRequestLimits.md)
+[How to Handle Request Limits](https://github.com/tradovate/example-api-faq/blob/main/docs/HowToHandleRequestLimits.md)
 
-[How to Handle Data Size Limits](https://github.com/tradovate/example-api-faq/tree/main/tree/main/docs/HowToHandleDataSizeLimits.md)
+[How to Handle Data Size Limits](https://github.com/tradovate/example-api-faq/blob/main/docs/HowToHandleDataSizeLimits.md)
 
