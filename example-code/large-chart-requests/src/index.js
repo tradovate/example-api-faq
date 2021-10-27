@@ -5,20 +5,13 @@ import { TradovateSocket } from "./socket/tvSocket"
 import { getAllBars } from "./socket/getAllBars"
 
 const ws = new TradovateSocket({debugLabel: 'market data'})
-const syncSocket = new TradovateSocket({debugLabel: 'sync data'})
 
 const main = async () => {
 
-    const { accessToken, mdAccessToken, userId, name } = await getAccessToken(URL, credentials)
+    const { mdAccessToken } = await getAccessToken(URL, credentials)
 
     await ws.connect(MD_URL, mdAccessToken)
-    await syncSocket.connect(WS_URL, accessToken)
-
-    syncSocket.subscribe({
-        url: 'user/syncrequest',
-        body: { users: [userId] }
-    })
-
+    
     let result = []
     
     await getAllBars({ 

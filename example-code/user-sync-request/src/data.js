@@ -10,17 +10,3 @@ export const credentials = {
     cid:        0,
     sec:        'your sec here'
 }
-
-export const getChartBody = {
-    symbol: '@NQ',
-    chartDescription: {
-        underlyingType: 'MinuteBar',
-        elementSize: 60,
-        elementSizeUnit: 'UnderlyingUnits',
-        withHistogram: false,
-    },
-    timeRange: {
-        asFarAsTimestamp: new Date('2018-10-07').toJSON(),
-        closestTimestamp: new Date().toJSON()
-    }
-}
