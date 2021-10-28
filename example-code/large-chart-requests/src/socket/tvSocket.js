@@ -1,5 +1,9 @@
-import { MD_URL, WS_URL } from "../data"
-import { waitForMs } from "../utils/waitForMs"
+
+import { URLs } from "../../../tutorialsURLs"
+import { tvGet } from "./services"
+import { waitForMs } from "./utils/waitForMs"
+
+const { DEMO_URL, MD_URL, WS_DEMO_URL, WS_LIVE_URL } = URLs
 
 const noop = () => {}
 
@@ -61,7 +65,7 @@ TradovateSocket.prototype.connect = async function(url, token) {
             console.log(self.debugLabel + '\n', T, data)
 
             if(T === 'a' && data && data.length > 0) {
-                self.listeners.forEach(listener => data.forEach(listener))
+                self.listeners.forEach(listener => data.forEach(d => listener(d)))
             }
         })
 
@@ -104,17 +108,18 @@ TradovateSocket.prototype.send = async function({url, query, body, onResponse, o
         self.ws.addEventListener('message', function onEvent(msg) {
             const [_, data] = prepareMessage(msg.data)        
             data.forEach(item => {
-                if(item.s && item.s === 200) {
-                    
-                    onResponse?.call(null, item.d)
+                if(item.s === 200 && item.i === id) {  
+                    if(onResponse) {
+                        onResponse(item)
+                    }
                     self.ws.removeEventListener('message', onEvent)
                     res(item)
-                } else {
+                } else if(item.s && item.s !== 200 && item.i && item.i === id) {
                     console.log(item)
                     self.ws.removeEventListener('message', onEvent)
-                    onReject?.call(null)
-                    rej(`\nFAILED:\n\toperation '${url}'\n\tquery ${JSON.stringify(query, null, 2)}\n\tbody ${JSON.stringify(body, null, 2)}\n\treason '${item?.d || 'unknown'}'`)
-                }
+                    if(onReject) onReject()
+                    rej(`\nFAILED:\n\toperation '${url}'\n\tquery ${query ? JSON.stringify(query, null, 2) : ''}\n\tbody ${body ? JSON.stringify(body, null, 2) : ''}\n\treason '${JSON.stringify(item?.d, null, 2) || 'unknown'}'`)
+                } 
             })
         })
         this.ws.send(`${url}\n${id}\n${query || ''}\n${JSON.stringify(body)}`)
@@ -142,6 +147,8 @@ TradovateSocket.prototype.subscribe = async function({url, body, subscription}) 
 
     let removeListener = noop
     let cancelUrl = ''
+    let cancelBody = {}
+    let contractId
     
     let response = await this.send({url, body})
 
@@ -151,66 +158,92 @@ TradovateSocket.prototype.subscribe = async function({url, body, subscription}) 
         response = nextResponse
     }
 
-    const realtimeId = response?.d?.realtimeId
+    const realtimeId = response?.d?.realtimeId || response?.d?.subscriptionId
+    if(body.symbol) {
+        const contractRes = await tvGet('/contract/find', { name: body.symbol })
+        contractId = contractRes.id
+    }
 
-    // console.log(realtimeId)
+    if(!realtimeId && response.d && response.d.users) { //for user sync request's initial response
+        subscription(response.d)
+    }
 
     return new Promise((res, rej) => {
-
-        removeListener = self.addListener(data => {
-            switch(url.toLowerCase()) {
-                case 'md/getchart': {
-                    if(url !== MD_URL) rej('Cannot subscribe to Chart Data without using the Market Data URL.')
-                    cancelUrl = 'md/cancelChart'
-                    data.d.charts.forEach(chart => chart.id === realtimeId ? subscription(chart) : noop())
-                    break
-                }
-                case 'md/subscribedom': {
-                    if(url !== MD_URL) rej('Cannot subscribe to DOM Data without using the Market Data URL.')
-                    cancelUrl = 'md/unsubscribeDom'
-                    data.d.doms.forEach(dom => dom.id === realtimeId ? subscription(dom) : noop())
-                    break
-                }
-                case 'md/subscribequote': {
-                    if(url !== MD_URL) rej('Cannot subscribe to Quote Data without using the Market Data URL.')
-                    cancelUrl = 'md/ubsubscribequote'
-                    data.d.quotes.forEach(quote => quote.id === realtimeId ? subscription(quote) : noop())
-                    break
-                }
-                case 'md/subscribehistogram': {
-                    if(url !== MD_URL) rej('Cannot subscribe to Histogram Data without using the Market Data URL.')
-                    cancelUrl = 'md/ubsubscribehistogram'
-                    data.d.histograms.forEach(histogram => histogram.id === realtimeId ? subscription(histogram) : noop())
-                    break
-                }
-                case 'user/syncrequest': {
-                    if(url !== WS_URL) rej('Cannot subscribe to Chart Data without using the Market Data URL.')
+        
+        switch(url.toLowerCase()) {
+            case 'md/getchart': {
+                cancelUrl = 'md/cancelChart'
+                cancelBody = { subscriptionId: realtimeId }
+                if(this.listeningURL !== MD_URL) rej('Cannot subscribe to Chart Data without using the Market Data URL.')
+                removeListener = self.addListener(data => {
+                    if(data.d.charts) {
+                        data.d.charts.forEach(chart => chart.id === realtimeId ? subscription(chart) : noop())
+                    }
+                })
+                break
+            }
+            case 'md/subscribedom': {
+                cancelUrl = 'md/unsubscribedom'
+                cancelBody = { symbol: body.symbol }
+                if(this.listeningURL !== MD_URL) rej('Cannot subscribe to DOM Data without using the Market Data URL.')
+                removeListener = self.addListener(data => {
+                    if(data.d.doms) {
+                        data.d.doms.forEach(dom => dom.contractId === contractId ? subscription(dom) : noop())
+                    }
+                })
+                break
+            }
+            case 'md/subscribequote': {
+                cancelUrl = 'md/unsubscribequote'
+                cancelBody = { symbol: body.symbol }
+                if(this.listeningURL !== MD_URL) rej('Cannot subscribe to Quote Data without using the Market Data URL.')
+                removeListener = self.addListener(data => {
+                    if(data.d.quotes) {
+                        data.d.quotes.forEach(quote => quote.contractId === contractId ? subscription(quote) : noop())
+                    } 
+                })
+                break
+            }
+            case 'md/subscribehistogram': {
+                cancelUrl = 'md/unsubscribehistogram'
+                cancelBody = { symbol: body.symbol }
+                if(this.listeningURL !== MD_URL) rej('Cannot subscribe to Histogram Data without using the Market Data URL.')
+                removeListener = self.addListener(data => {
+                    if(data.d.histograms) {
+                        data.d.histograms.forEach(histogram => histogram.contractId === contractId ? subscription(histogram) : noop())
+                    } 
+                })
+                break
+            }
+            case 'user/syncrequest': {
+                if(this.listeningURL !== WS_DEMO_URL && url !== WS_LIVE_URL) rej('Cannot subscribe to User Data without using one of the Demo or Live URLs.')
+                removeListener = self.addListener(data => {
                     if(data?.d?.users || data?.e === 'props') {
                         subscription(data.d)
                     }                         
-                    break
-                }
-                default:
-                    rej('Incorrect URL parameters provided to subscribe.')
-                    break
+                })
+                break
             }
-        })
+            default:
+                rej('Incorrect URL parameters provided to subscribe.')
+                break            
+        }
 
         res(async () => {
             removeListener()
             if(cancelUrl && cancelUrl !== '') {
-                await self.send({ url: cancelUrl, body: { subscriptionId: realtimeId } })
+                await self.send({ url: cancelUrl, body: cancelBody })
             }
         })
     })
 }
 
 function checkHeartbeats(socket, curTime) {
-    const now = new Date() //time at call of onmessage
+    const now = new Date()  //time at call of onmessage
 
     if(now.getTime() - curTime.getTime() >= 2500) {
-        socket.send('[]')
-        return new Date()    //set the new base time
+        socket.send('[]')   //send heartbeat
+        return new Date()   //set the new base time
     }
     
     return curTime
