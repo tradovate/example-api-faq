@@ -1,6 +1,6 @@
 import { getAccessToken } from "./getAccessToken"
 
-import { URL, MD_URL, credentials, getChartBody, WS_URL } from './data'
+import { URL, MD_URL, credentials, getChartBody } from './data'
 import { TradovateSocket } from "./socket/tvSocket"
 import { getAllBars } from "./socket/getAllBars"
 

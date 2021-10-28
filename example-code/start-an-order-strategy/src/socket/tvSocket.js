@@ -2,7 +2,6 @@
 import { tvGet } from "./services"
 import { waitForMs } from "../utils/waitForMs"
 import { MD_URL, WS_DEMO_URL, WS_LIVE_URL } from "../data"
-import { WS_URL } from "../../../large-chart-requests/src/data"
 
 
 

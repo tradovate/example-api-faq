@@ -12,16 +12,17 @@ export const credentials = {
     sec:        'Your API secret here'
 }
 
-export const getChartBody = {
-    symbol: '@NQ',
-    chartDescription: {
-        underlyingType: 'MinuteBar',
-        elementSize: 60,
-        elementSizeUnit: 'UnderlyingUnits',
-        withHistogram: false,
+export const params = {
+    entryVersion: {
+        orderId: 0,
+        orderQty: 1,
+        orderType: 'Market',
+        timeInForce: 'Day',
     },
-    timeRange: {
-        asFarAsTimestamp: new Date('2018-10-07').toJSON(),
-        closestTimestamp: new Date().toJSON()
-    }
+    brackets: [{
+        qty: 1,
+        profitTarget: 75,
+        stopLoss: -33,
+        trailingStop: false
+    }]
 }

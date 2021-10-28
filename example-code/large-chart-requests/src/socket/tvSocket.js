@@ -1,9 +1,7 @@
 
-import { URLs } from "../../../tutorialsURLs"
 import { tvGet } from "./services"
-import { waitForMs } from "./utils/waitForMs"
-
-const { DEMO_URL, MD_URL, WS_DEMO_URL, WS_LIVE_URL } = URLs
+import { waitForMs } from "../utils/waitForMs"
+import { MD_URL, WS_DEMO_URL, WS_LIVE_URL } from "../data"
 
 const noop = () => {}
 
@@ -159,9 +157,12 @@ TradovateSocket.prototype.subscribe = async function({url, body, subscription}) 
     }
 
     const realtimeId = response?.d?.realtimeId || response?.d?.subscriptionId
-    if(body.symbol) {
+    if(body?.symbol && !body.symbol.startsWith('@')) {
         const contractRes = await tvGet('/contract/find', { name: body.symbol })
-        contractId = contractRes.id
+        contractId = contractRes?.id || null
+        if(!contractId) {
+            contractId = await tvGet('/contract/suggest', {name: body.symbol })[0].id
+        }
     }
 
     if(!realtimeId && response.d && response.d.users) { //for user sync request's initial response
