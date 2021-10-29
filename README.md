@@ -16,3 +16,13 @@ In an effort to aid in the learning process for new API developers, we’ve prep
 [How to Handle Request Rate Limits](https://github.com/tradovate/example-api-faq/tree/main/docs/HowToHandleRequestLimits.md)
 
 [What is the Entity System and How Does it Work?](https://github.com/tradovate/example-api-faq/tree/main/docs/WhatIsTheEntitySystemAndHowDoesItWork.md)
+
+### Sample Code
+
+Included in the `example-code` directory are a few pre-built solutions for common tasks. The current line-up includes:
+
+[large-chart-requests](https://github.com/tradovate/example-api-faq/tree/main/example-code/large-chart-requests) - An example of how to retrieve very large sets of data using the Market Data API.
+
+[user-sync-request](https://github.com/tradovate/example-api-faq/tree/main/example-code/user-sync-request) - An example of how to intercept user events by using the `user/syncrequest` endpoint.
+
+[start-an-order-strategy](https://github.com/tradovate/example-api-faq/tree/main/example-code/start-an-order-strategy) - By popular demand, here is an example of how to start an order strategy using the `orderstrategy/startorderstrategy` endpoint. Press the button to run the order, modify the order in the `data.js` file.

@@ -14,7 +14,46 @@ const main = async () => {
     const unsubscribe = await syncSocket.subscribe({
         url: 'user/syncrequest',
         body: { users: [userId] },
-        subscription: item => console.log(item)
+        subscription: item => {
+            if(item.users) {
+                //this is the initial response. You will get any of these fields in the response
+                const { 
+                    accountRiskStatuses,
+                    accounts,
+                    cashBalances,
+                    commandReports,
+                    commands,
+                    contractGroups,
+                    contractMaturities,
+                    contracts,
+                    currencies,
+                    exchanges,
+                    executionReports,
+                    fillPairs,
+                    fills,
+                    marginSnapshots,
+                    orderStrategies, 
+                    orderStrategyLinks,
+                    orderStrategyTypes,
+                    orderVersions,
+                    orders,
+                    positions,
+                    products,
+                    properties,
+                    spreadDefinitions,
+                    userAccountAutoLiqs,
+                    userPlugins,
+                    userProperties,
+                    userReadStatuses,
+                    users        
+                } = item
+                console.log(`initial response:\n${JSON.stringify(item, null, 2)}`)
+            } else {
+                //otherwise this is a user data event, they look like this
+                const { entityType, entity, eventType } = item
+                console.log(`update event:\n${JSON.stringify(item, null, 2)}`)
+            }
+        }
     })
 }
 
