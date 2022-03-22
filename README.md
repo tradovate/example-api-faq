@@ -17,6 +17,8 @@ In an effort to aid in the learning process for new API developers, we’ve prep
 
 [What is the Entity System and How Does it Work?](https://github.com/tradovate/example-api-faq/tree/main/docs/WhatIsTheEntitySystemAndHowDoesItWork.md)
 
+[Undertanding Device IDs](https://github.com/tradovate/example-api-faq/tree/main/docs/UnderstandingDeviceId.md)
+
 ### Sample Code
 
 Included in the `example-code` directory are a few pre-built solutions for common tasks. The current line-up includes:
